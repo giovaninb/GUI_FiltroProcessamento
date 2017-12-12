@@ -3,21 +3,20 @@
 '''
 ################################################
 # Image Processando GUI
-# Performs several image Processando functions on
-# an imported image
-# using Python, Pyside, Qt, PIL
+# Realizamos alguns processamentos de imagens
+# em uma imagem importada
+# usando Python, Pyside, Qt, PIL
 #
 # Giovani Nícolas Bettoni
-# 10 December 2017
+# 12 Dezembro 2017
 ################################################
 '''
-
-
 
 import sys
 from PySide import QtGui
 from PySide import QtCore
 from PIL import Image
+import dicom as pdicom
 
 class MainWindow(QtGui.QWidget):
 
@@ -37,14 +36,14 @@ class MainWindow(QtGui.QWidget):
         self.fileLabel = QtGui.QLabel('Nenhum arquivo selecionado')
         filePick.addWidget(self.fileLabel)
 
-        # Create a push button labelled 'choose' and add it to our layout
+        # Cria um botão e adiciona um label
         fileBtn = QtGui.QPushButton('Escolher arquivo', self)
         filePick.addWidget(fileBtn)
 
-        # Connect the clicked signal to the get_fname handler
+        # Conecta o 'signal clicked' ao 'get_fname handler'
         self.connect(fileBtn, QtCore.SIGNAL('clicked()'), self.get_fname)
 
-        # Set the image to be blank at first
+        # Seta a imagem para o espaço branco inicialmente
         pixmap = QtGui.QPixmap()
         self.imageLabel = QtGui.QLabel()
         self.imageLabel.setPixmap(pixmap)
@@ -57,17 +56,17 @@ class MainWindow(QtGui.QWidget):
         sideBox = QtGui.QVBoxLayout()
         sideBoxPad = QtGui.QHBoxLayout()
 
-        # File picker on top
+        # Selecao da imagem no topo
         topBox.addStretch(1)
         topBox.addLayout(filePick)
         topBox.addStretch(1)
 
-        # Image in middle/right
+        # Imagem no meio/direita
         bottomBox.addStretch(1)
         bottomBox.addWidget(self.imageLabel)
         bottomBox.addStretch(1)
 
-        # Buttons on left
+        # Botoes na esquerda
         normalButton = QtGui.QPushButton("Normal")
         self.connect(normalButton, QtCore.SIGNAL('clicked()'), self.normal_image)
         addButton = QtGui.QPushButton("Brilho")
@@ -122,7 +121,7 @@ class MainWindow(QtGui.QWidget):
 
         self.show()
 
-    # File Picker Function
+    # Funcao de pegar arquivo
     def get_fname(self):
         """
         Handler called when 'choose file' is clicked
@@ -138,7 +137,7 @@ class MainWindow(QtGui.QWidget):
         else:
             self.fileLabel.setText("Nenhum arquivo selecionado")
 
-    # Load new image function
+    # Adicionar nova imagem
     def load_image(self, filepath):
         # Load the image into the label
         print "Carregando imagem.."
@@ -146,14 +145,14 @@ class MainWindow(QtGui.QWidget):
         self.imageLabel.setPixmap(pixmap)
         self.imageString = filepath
 
-    # Load new image function
+    # Carrega nova funcao de imagem
     def set_image(self, image):
         # Load the image into the label
         self.imageLabel.setPixmap(image)
 
-    # Load normal image
+    # Carrega imagem normal
     def normal_image(self):
-        # Load the image into the label
+        # Carrega a imagem dentro do label
         print "Carregando imagem.."
         pixmap = QtGui.QPixmap(self.imageString)
         self.imageLabel.setPixmap(pixmap)
@@ -168,7 +167,7 @@ class MainWindow(QtGui.QWidget):
     def add(self):
         print self.imageString
         if self.imageString:
-            print "Processando..."
+            print "Processando brilho..."
             im = Image.open(self.imageString)
             imdata = im.tobytes()
             imWidth = im.size[0]
@@ -221,7 +220,7 @@ class MainWindow(QtGui.QWidget):
     # Blur
     def blur(self):
         if self.imageString:
-            print "Processando..."
+            print "Processando desfocagem..."
             im = Image.open(self.imageString)
             imdata = im.tobytes()
             imWidth = im.size[0]
@@ -318,7 +317,7 @@ class MainWindow(QtGui.QWidget):
     def contrast(self):
         print self.imageString
         if self.imageString:
-            print "Processando..."
+            print "Processando contraste..."
             im = Image.open(self.imageString)
             imdata = im.tobytes()
             imWidth = im.size[0]
@@ -366,7 +365,7 @@ class MainWindow(QtGui.QWidget):
 
     def edge_detect(self):
         if self.imageString:
-            print "Processando..."
+            print "Processando deteccao de bordas..."
             im = Image.open(self.imageString)
             imdata = im.tobytes()
             imWidth = im.size[0]
@@ -462,7 +461,7 @@ class MainWindow(QtGui.QWidget):
     # Invert
     def invert(self):
         if self.imageString:
-            print "Processando..."
+            print "Processando inversao..."
             im = Image.open(self.imageString)
             imdata = im.tobytes()
             imWidth = im.size[0]
@@ -507,7 +506,7 @@ class MainWindow(QtGui.QWidget):
     # Convolução
     def multiply(self):
         if self.imageString:
-            print "Processando..."
+            print "Processando convolução..."
             im = Image.open(self.imageString)
             imdata = im.tobytes()
             imWidth = im.size[0]
@@ -555,7 +554,7 @@ class MainWindow(QtGui.QWidget):
     # Aguçamento
     def sharpen(self):
         if self.imageString:
-            print "Processando..."
+            print "Processando agucamento..."
             im = Image.open(self.imageString)
             imdata = im.tobytes()
             imWidth = im.size[0]
@@ -654,7 +653,7 @@ class MainWindow(QtGui.QWidget):
     # Pixels are either white or black based on the cutoff point
     def two_tone(self):
         if self.imageString:
-            print "Processando..."
+            print "Processando preto/branco..."
             im = Image.open(self.imageString)
             imdata = im.tobytes()
             imWidth = im.size[0]
