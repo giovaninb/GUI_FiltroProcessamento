@@ -1,7 +1,7 @@
-# GUI_FiltroProcessamento
+# GUI_FiltersProcessing
 
-## Python GUI para executar funções básicas de processamento de imagem.
+## Python GUI to perform basic image processing functions.
 
-## Usando o PySide para GUI e PIL para gerenciamento de imagens.
+## Using PySide for GUI and PIL for Image Management.
 
-### AVISO: isso não é para ser eficiente. Todo o trabalho é feito na thread main. Este protótipo destina-se a fins de aprendizagem.
+### WARNING: This is not to be efficient. All work is done on the main thread. This prototype is for learning purposes.
